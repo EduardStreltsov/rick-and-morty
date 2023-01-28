@@ -18,10 +18,10 @@ final class TabViewController: UITabBarController {
 	}
 	
 	private func setUpTabs() {
-		let characterVC = CharacterController()
+		let characterVC = CharacterViewController()
 		let locationVC = LocationController()
-		let episodeVC = EpisodeController()
-		let settingsVC = SettingsController()
+		let episodeVC = EpisodeViewController()
+		let settingsVC = SettingsViewController()
 		
 		let vcs = [characterVC, locationVC, episodeVC, settingsVC]
 		for vc in vcs {

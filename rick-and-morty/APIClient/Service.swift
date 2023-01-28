@@ -1,10 +1,12 @@
 import Foundation
 
 final class Service {
-	static let share = Service()
+	static let shared = Service()
 	private init() {}
 	
-	public func execute(_ request: Request, completion: @escapint () -> Void) {
+	public func execute<T: Codable>(_ request: Request,
+	                                expecting type: T.Type,
+	                                completion: @escaping (Result<T, Error>) -> Void) {
 	
 	}
 }

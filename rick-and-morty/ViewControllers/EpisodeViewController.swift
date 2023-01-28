@@ -1,6 +1,6 @@
 import UIKit
 
-final class EpisodeController: UIViewController {
+final class EpisodeViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()

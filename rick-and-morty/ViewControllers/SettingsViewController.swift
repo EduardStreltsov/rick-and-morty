@@ -1,12 +1,10 @@
 import UIKit
 
-final class CharacterController: UIViewController {
-	
+class SettingsViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		view.backgroundColor = .systemBackground
-		title = "Characters"
+		title = "Settings"
 	}
-	
 }
