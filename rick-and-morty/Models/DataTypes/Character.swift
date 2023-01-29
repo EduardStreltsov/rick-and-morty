@@ -8,9 +8,9 @@ struct Character: Codable {
 	let type: String
 	let gender: Gender
 	let origin: Origin
-	let location: Location
+	let location: Origin
 	let image: String
-	let episode: [Episode]
+	let episode: [String]
 	let url: String
 	let created: String
 }
