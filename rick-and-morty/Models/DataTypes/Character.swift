@@ -3,7 +3,7 @@ import Foundation
 struct Character: Codable {
 	let id: Int
 	let name: String
-	let status: Status
+	let status: CharacterStatus
 	let species: String
 	let type: String
 	let gender: Gender
