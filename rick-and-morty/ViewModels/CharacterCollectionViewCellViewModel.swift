@@ -5,7 +5,7 @@ final class CharacterCollectionViewCellViewModel {
 	public let name: String
 	private let characterStatus: CharacterStatus
 	public var characterStatusText: String {
-		characterStatus.rawValue
+		"Status: \(characterStatus.text)"
 	}
 	private let imageURL: URL?
 	

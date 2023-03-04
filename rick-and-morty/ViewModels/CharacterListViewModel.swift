@@ -1,12 +1,39 @@
 import UIKit
 
+protocol CharacterListViewModelDelegate: AnyObject {
+	func didLoadInitialCharacters()
+}
+
 final class CharacterListViewModel: NSObject {
-	func fetchCharacterList() {
-		Service.shared.execute(.listCharactersRequests, expecting: GetAllCharactersResponse.self) { result in
+	
+	public weak var delegate: CharacterListViewModelDelegate?
+	
+	private var characters: [Character] = [] {
+		didSet {
+			for character in characters {
+				let viewModel = CharacterCollectionViewCellViewModel(name: character.name,
+					characterStatus: character.status,
+					imageURL: URL(string: character.image))
+			cellViewModels.append(viewModel)
+			}
+		}
+	}
+	private var cellViewModels: [CharacterCollectionViewCellViewModel] = []
+	
+	
+	
+	public func fetchCharacterList() {
+		Service.shared.execute(.listCharactersRequests,
+			expecting: GetAllCharactersResponse.self) { [weak self] result in
 			switch result {
 			case .success(let model):
-				//print(String(describing: model))
+				let results = model.results
+				self?.characters = results
+				DispatchQueue.main.async {
+					self?.delegate?.didLoadInitialCharacters()
+				}
 				print("Example image url: " + String(model.results.first?.image ?? "no image"))
+				print("Got \(model.results.count) results")
 			case .failure(let error):
 				print(String(describing: error))
 			}
@@ -19,7 +46,7 @@ extension CharacterListViewModel: UICollectionViewDelegate,
 	UICollectionViewDataSource {
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		20
+		cellViewModels.count
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -29,10 +56,7 @@ extension CharacterListViewModel: UICollectionViewDelegate,
 		else {
 			fatalError("Unsupported cell")
 		}
-		let viewModel = CharacterCollectionViewCellViewModel(name: "name",
-			characterStatus: .alive,
-			imageURL: URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg"))
-		cell.configure(with: viewModel)
+		cell.configure(with: cellViewModels[indexPath.row])
 		//cell.backgroundColor = .systemGr een
 		return cell
 	}

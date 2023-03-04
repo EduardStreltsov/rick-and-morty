@@ -31,6 +31,7 @@ final class CharacterListView: UIView {
 		addConstraints()
 		
 		spinner.startAnimating()
+		viewModel.delegate = self
 		viewModel.fetchCharacterList()
 		setUpCollectionView()
 	}
@@ -56,13 +57,20 @@ final class CharacterListView: UIView {
 	private func setUpCollectionView() {
 		collectionView.dataSource = viewModel
 		collectionView.delegate = viewModel
+	}
+}
+
+extension CharacterListView: CharacterListViewModelDelegate {
+	func didLoadInitialCharacters() {
+		// this is for not to get situation when view is loaded before we went ahead and got the data
 		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-			self.spinner.stopAnimating()
-			self.collectionView.isHidden = false
-			UIView.animate(withDuration: 0.4) {
-				self.collectionView.alpha = 1
-			}
-		})
+		//DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+		spinner.stopAnimating()
+		collectionView.isHidden = false
+		collectionView.reloadData()
+		UIView.animate(withDuration: 0.4) {
+			self.collectionView.alpha = 1
+		}
+		//})
 	}
 }
